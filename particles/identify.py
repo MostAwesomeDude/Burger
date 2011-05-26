@@ -94,7 +94,17 @@ def identify(buff):
     )
 
     if const:
-        return ("item.superclass", cf.this)    
+        return ("item.superclass", cf.this)
+
+    # Packet-handler class for login. This contains the current protocol
+    # version.
+    const = cf.constants.find_one(
+        ConstantType.STRING,
+        lambda const: "Outdated" in const["string"]["value"]
+    )
+
+    if const:
+        return "handler.login", cf.this
 
 class IdentifyParticle(Particle):
     PROVIDES = [
@@ -104,6 +114,7 @@ class IdentifyParticle(Particle):
         "identify.recipe.inventory",
         "identify.recipe.cloth",
         "identify.item.superclass"
+        "identify.handler.login",
     ]
 
     DEPENDS = []
